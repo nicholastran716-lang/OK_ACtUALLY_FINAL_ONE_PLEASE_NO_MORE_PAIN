@@ -1,16 +1,15 @@
 `timescale 1ns / 1ps
 
 module rising_edge_detector (
-    input  logic clk,
-    input  logic sig_in,
-    output logic rise
+    input clk,
+    input sig_in,
+    output reg rise
 );
-  logic sig_in_before;
+  reg sign_in_before;
 
-  always_ff @(posedge clk) begin
-    sig_in_before <= sig_in;
-    rise <= sig_in && !sig_in_before;
+  always @(posedge clk) begin
+    sign_in_before <= sig_in;
   end
 
-
+  assign rise = sig_in && !sign_in_before;
 endmodule

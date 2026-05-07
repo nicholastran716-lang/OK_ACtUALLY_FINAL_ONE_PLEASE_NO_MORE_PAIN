@@ -1,7 +1,3 @@
-`include "rtl/restartable_rate_generator.sv"
-`include "rtl/hms_counter.sv"
-`include "rtl/binary_to_bcd.sv"
-`include "rtl/seven_segment.sv"
 `timescale 1ns / 1ps
 
 
@@ -19,6 +15,10 @@ module top_time_display_v1 #(
 );
   // check if capital or not
   localparam int ActiveLow = 1;
+  localparam logic [31:0] Cycle_1Hz = CYCLES_PER_SECOND;
+  localparam logic [31:0] Cycle_25Hz = CYCLES_PER_SECOND / 25;
+  localparam logic [31:0] Cycle_1kHz = CYCLES_PER_SECOND / 1000;
+  localparam logic [31:0] Cycle_50MHz = CYCLES_PER_SECOND / 50_000_000;
 
   logic tick, tick_1hz, tick_25hz, tick_1khz, tick_50mhz;
   logic [4:0] hours;
@@ -72,28 +72,28 @@ module top_time_display_v1 #(
 
   // rate generator
   restartable_rate_generator #(
-      .CYCLE_COUNT(CYCLES_PER_SECOND)
+      .CYCLE_COUNT(CYCLE_1HZ)
   ) u_restartable_rate_generator_1Hz (
       .clk (CLOCK_50),
       .run (1'b1),
       .tick(tick_1hz)
   );
   restartable_rate_generator #(
-      .CYCLE_COUNT(CYCLES_PER_SECOND / 25)
+      .CYCLE_COUNT(CYCLE_25HZ)
   ) u_restartable_rate_generator_25Hz (
       .clk (CLOCK_50),
       .run (1'b1),
       .tick(tick_25hz)
   );
   restartable_rate_generator #(
-      .CYCLE_COUNT(CYCLES_PER_SECOND / 1000)
+      .CYCLE_COUNT(CYCLE_1KHZ)
   ) u_restartable_rate_generator_1kHz (
       .clk (CLOCK_50),
       .run (1'b1),
       .tick(tick_1khz)
   );
   restartable_rate_generator #(
-      .CYCLE_COUNT(CYCLES_PER_SECOND / 50_000_000)
+      .CYCLE_COUNT(CYCLE_50MHZ)
   ) u_restartable_rate_generator_50MHz (
       .clk (CLOCK_50),
       .run (1'b1),

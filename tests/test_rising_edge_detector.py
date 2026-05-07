@@ -6,7 +6,7 @@ from conftest import rtl_exists
     not rtl_exists("rising_edge_detector.sv"),
     reason="rising_edge_detector not implemented yet",
 )
-def test_rising_edge_detector(cocotb_runner):
+def test_Rising_edge_detector(cocotb_runner):
     """Test rising_edge_detector."""
     cocotb_runner(
         top="rising_edge_detector",

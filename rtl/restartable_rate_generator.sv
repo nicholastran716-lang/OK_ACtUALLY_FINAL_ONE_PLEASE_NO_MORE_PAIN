@@ -1,4 +1,3 @@
-`include "rtl/mod_n_counter.sv"
 `timescale 1ns / 1ps
 
 module restartable_rate_generator #(

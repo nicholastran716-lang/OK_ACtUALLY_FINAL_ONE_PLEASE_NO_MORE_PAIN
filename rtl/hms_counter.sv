@@ -1,4 +1,3 @@
-`include "rtl/up_down_counter.sv"
 `timescale 1ns / 1ps
 
 module hms_counter #(
