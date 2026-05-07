@@ -1,3 +1,4 @@
+
 `timescale 1ns/1ps
 module wave_pwm_generator;
   reg  clk = 0;
