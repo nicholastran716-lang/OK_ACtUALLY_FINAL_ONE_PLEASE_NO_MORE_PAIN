@@ -1,6 +1,5 @@
 `timescale 1ns / 1ps
 
-
 module top_time_display_v1 #(
     parameter int CYCLES_PER_SECOND = 50_000_000
 ) (
