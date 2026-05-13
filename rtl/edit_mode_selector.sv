@@ -1,8 +1,4 @@
-`include "rtl/button_hold_pulse.sv"
-`include "rtl/button_hold_detect.sv"
-`include "rtl/rising_edge_detector.sv"
-`include "rtl/arming_latch.sv"
-`include "rtl/mod_n_counter.sv"
+
 `timescale 1ns / 1ps
 module edit_mode_selector #(
     parameter int HOLD_CYCLES = 50_000_000

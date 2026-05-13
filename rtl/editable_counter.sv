@@ -23,9 +23,9 @@ module editable_counter #(
       .count(count)
   );
 
-  logic inc_event = edit_mode && inc && !dec;
-  logic dec_event = edit_mode && dec && !inc;
-  logic tick_event = !edit_mode && tick;
+  wire inc_event = edit_mode && inc && !dec;
+  wire dec_event = edit_mode && dec && !inc;
+  wire tick_event = !edit_mode && tick;
 
   assign up = inc_event || tick_event;  // be on when in editor mode
   assign enable = inc_event || dec_event || tick_event;  // Fill this in

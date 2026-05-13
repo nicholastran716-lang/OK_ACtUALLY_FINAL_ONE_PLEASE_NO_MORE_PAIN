@@ -1,0 +1,55 @@
+{
+  "extensionVersion": "1.5.2",
+  "fileName": "/workspace/wave_button_auto_repeat.vcd",
+  "markerTime": 115000,
+  "altMarkerTime": null,
+  "displayTimeUnit": "ps",
+  "selectedSignal": {
+    "name": "wave_button_auto_repeat.clk",
+    "msb": -1,
+    "lsb": -1
+  },
+  "zoomRatio": 0.00186125639017324,
+  "scrollLeft": 0,
+  "displayedSignals": [
+    {
+      "dataType": "netlist-variable",
+      "netlistId": 2,
+      "name": "wave_button_auto_repeat.clk",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "rowHeight": 1,
+      "verticalScale": 1,
+      "nameType": "fullPath",
+      "customName": "clk",
+      "renderType": "binary",
+      "valueLinkCommand": ""
+    },
+    {
+      "dataType": "netlist-variable",
+      "netlistId": 1,
+      "name": "wave_button_auto_repeat.button",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "rowHeight": 1,
+      "verticalScale": 1,
+      "nameType": "fullPath",
+      "customName": "button",
+      "renderType": "binary",
+      "valueLinkCommand": ""
+    },
+    {
+      "dataType": "netlist-variable",
+      "netlistId": 0,
+      "name": "wave_button_auto_repeat.pulse",
+      "numberFormat": "binary",
+      "colorIndex": 0,
+      "rowHeight": 1,
+      "verticalScale": 1,
+      "nameType": "fullPath",
+      "customName": "pulse",
+      "renderType": "binary",
+      "valueLinkCommand": ""
+    }
+  ]
+}

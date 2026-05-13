@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module user_top_watch_v1 #(
+module user_top_watch_v4 #(
     parameter int CYCLES_PER_SECOND = 50_000_000
 
 ) (
@@ -80,24 +80,16 @@ module user_top_watch_v1 #(
   );
 
   // Derive 1 Hz tick from system clock
+  logic run;
   restartable_rate_generator #(
       .CYCLE_COUNT(CYCLES_PER_SECOND)
   ) u_divider_1_Hz (
       .clk (clk),
-      .run (1'b1),
+      .run (run),
       .tick(seconds_tick)
   );
 
-  assign seconds_edit = 1'b0;
-  assign minutes_edit = 1'b0;
-  assign hours_edit = 1'b0;
-  assign seconds_inc = 1'b0;
-  assign seconds_dec = 1'b0;
-  assign minutes_inc = 1'b0;
-  assign minutes_dec = 1'b0;
-  assign hours_inc = 1'b0;
-  assign hours_dec = 1'b0;
-
+  assign run = ~(seconds_edit && button[3]);
   assign minutes_tick = seconds_tick && (seconds_disp == 7'(59));
   assign hours_tick = seconds_tick && (seconds_disp == 7'(59)) && minutes_tick && (minutes_disp == 7'(59));
 
@@ -108,10 +100,66 @@ module user_top_watch_v1 #(
 
   // Unused
   assign led = 10'b0;
-  assign blank_hours = 1'b0;
-  assign blank_minutes = 1'b0;
-  assign blank_seconds = 1'b0;
+
+  logic [2:0] mode_enable;
+  edit_mode_selector #(
+      .HOLD_CYCLES(CYCLES_PER_SECOND)
+  ) u_mode_selector (
+      .clk(clk),
+      .button(button[3]),
+      .mode_enable(mode_enable)
+  );
 
 
+  logic pwm_out;
+  pwm_generator #(
+      .PERIOD_CYCLES(CYCLES_PER_SECOND / 2),
+      .DUTY_CYCLES  (CYCLES_PER_SECOND / 10)
+  ) u_pwm_generator (
+      .clk(clk),
+      .rst(1'(0)),
+      .pwm_out(pwm_out)
+  );
+
+  assign seconds_edit = (mode_enable == 3'b001);
+  assign minutes_edit = (mode_enable == 3'b010);
+  assign hours_edit = (mode_enable == 3'b100);
+
+  assign blank_hours = hours_edit && pwm_out;
+  assign blank_minutes = minutes_edit && pwm_out;
+  assign blank_seconds = seconds_edit && pwm_out;
+
+
+  //edit logic
+  // Instantiate button_auto_repeat (2 Modes : Inc / Dec at 10 Hz)
+  logic inc_pulse;
+  logic dec_pulse;
+
+  button_auto_repeat #(
+      .HOLD_CYCLES  (CYCLES_PER_SECOND / 2),
+      .REPEAT_CYCLES(CYCLES_PER_SECOND / 10)
+  ) u_inc_repeat (
+      .clk(clk),
+      .button(button[1]),
+      .pulse(inc_pulse)
+  );
+
+  button_auto_repeat #(
+      .HOLD_CYCLES  (CYCLES_PER_SECOND / 2),
+      .REPEAT_CYCLES(CYCLES_PER_SECOND / 10)
+  ) u_dec_repeat (
+      .clk(clk),
+      .button(button[0]),
+      .pulse(dec_pulse)
+  );
+
+  //output logic
+  assign seconds_inc = inc_pulse && seconds_edit;
+  assign minutes_inc = inc_pulse && minutes_edit;
+  assign hours_inc   = inc_pulse && hours_edit;
+  assign seconds_dec = dec_pulse && seconds_edit;
+  assign minutes_dec = dec_pulse && minutes_edit;
+  assign hours_dec  = dec_pulse && hours_edit;
+  
 
 endmodule
